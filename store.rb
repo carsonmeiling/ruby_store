@@ -15,7 +15,7 @@
   {item: "Beef", price: 4, quantity_left: 10},
 ]
 
-cart = []
+@cart = []
 
 def greeting
   design_spaces
@@ -32,6 +32,10 @@ def design_spaces
 end
 
 def main_menu
+  puts '--------------'
+  puts '--------------'
+  puts '--------------'
+  puts "Main Menu"
   puts "1) - See available items for purchase"
   puts "2) - See current cart inventory "
   puts "3) - Add items to store inventory"
@@ -47,7 +51,7 @@ def main_menu
     add_new_items
   when 4
     puts `exit`
-  when 5
+  else
     puts "That is not an option, try again"
     main_menu
   end
@@ -63,13 +67,52 @@ def store_items
   puts "---------"
   puts "---------"
   puts "pick an item to add"
-  user_choice  = gets.strip.to_i
-  puts user_choice
+  user_choice  = gets.strip.to_i - 1
+  add_to_cart(@inventory[user_choice])
+  # add_to_cart(user_choice)
+  # to do add to cart function.
 end
 
 def user_cart
-  # todo
+  puts "---------"
+  puts "---------"
+  puts "---------"
+  show_cart_items
+  main_menu
 end
+
+def show_cart_items
+  puts "User Cart Items"
+  if @cart.length > 0
+    @cart.each_with_index do |product, i| 
+      puts "#{i + 1}) Item: #{product[:item]} Price: $#{product[:price]}"
+    end
+    remove_from_cart
+  else
+    puts "Your cart is empty"
+  end
+  
+end
+
+def add_to_cart(item)
+  @cart << item
+  user_cart
+end
+
+def remove_from_cart
+  puts "Would you like to remove an item? y/n"
+  user_choice = gets.strip.to_s
+  if user_choice = 'y'
+    puts "choose an item to remove"
+    item_to_remove = gets.strip.to_i
+    @inventory.delete_at(item_to_remove)
+  else
+  end
+  show_cart_items
+  
+  main_menu
+end
+
 
 def add_new_items
   #todo
